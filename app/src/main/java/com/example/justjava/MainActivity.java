@@ -12,6 +12,8 @@ import java.text.NumberFormat;
  */
 public class MainActivity extends ActionBarActivity {
 
+    int numberOfCoffees = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,9 +24,24 @@ public class MainActivity extends ActionBarActivity {
      * This method is called when the order button is clicked.
      */
     public void submitOrder(View view) {
-        int numberOfCoffees = 2;
         display(numberOfCoffees);
-        displayPrice(numberOfCoffees*5);
+        displayPrice(numberOfCoffees * 5);
+    }
+
+    /**
+     * This method is called when the plus button is clicked.
+     */
+    public void increment(View view) {
+        numberOfCoffees = numberOfCoffees+1;
+        display(numberOfCoffees);
+    }
+
+    /**
+     * This method is called when the minus button is clicked.
+     */
+    public void decrement(View view){
+            numberOfCoffees = numberOfCoffees - 1;
+            display(numberOfCoffees);
     }
 
     /**
