@@ -24,10 +24,17 @@ public class MainActivity extends ActionBarActivity {
      * This method is called when the order button is clicked.
      */
     public void submitOrder(View view) {
-        display(numberOfCoffees);
-        displayPrice(numberOfCoffees * 5);
+        int price = numberOfCoffees * 5;
+        String priceMessage = "Total:  $" + price + "\nThank you!";
+        displayMessage(priceMessage);
     }
-
+    /**
+     * This method displays the given text on the screen.
+     */
+    private void displayMessage(String message) {
+        TextView price_text_view = (TextView) findViewById(R.id.price_text_view);
+        price_text_view.setText(message);
+    }
     /**
      * This method is called when the plus button is clicked. asdf
      */
