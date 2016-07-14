@@ -29,7 +29,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     /**
-     * This method is called when the plus button is clicked.
+     * This method is called when the plus button is clicked. asdf
      */
     public void increment(View view) {
         numberOfCoffees = numberOfCoffees+1;
