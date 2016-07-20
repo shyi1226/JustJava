@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.os.Bundle;
 
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.NumberFormat;
 
@@ -13,7 +16,7 @@ import java.text.NumberFormat;
  */
 public class MainActivity extends Activity {
 
-    int numberOfCoffees = 0;
+    int numberOfCoffees = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +28,16 @@ public class MainActivity extends Activity {
      * This method is called when the order button is clicked.
      */
     public void submitOrder(View view) {
-        int price = calculatePrice(numberOfCoffees);
-        String priceMessage = createOrderSummary(price);
+        EditText text = (EditText) findViewById(R.id.name_field);
+        String nameValue = text.getText().toString();
+
+        CheckBox creamCheck = (CheckBox) findViewById(R.id.whipped_cream);
+        CheckBox chocoCheck = (CheckBox) findViewById(R.id.topping_chocolate);
+        boolean hasWhippedCream = creamCheck.isChecked();
+        boolean hasChocolate = chocoCheck.isChecked();
+
+        int price = calculatePrice(numberOfCoffees, hasWhippedCream, hasChocolate);
+        String priceMessage = createOrderSummary(price, nameValue, hasWhippedCream, hasChocolate);
         displayMessage(priceMessage);
     }
     /**
@@ -36,10 +47,16 @@ public class MainActivity extends Activity {
         TextView order_summary_text_view = (TextView) findViewById(R.id.order_summary_text_view);
         order_summary_text_view.setText(message);
     }
+
+
     /**
      * This method is called when the plus button is clicked. asdf
      */
     public void increment(View view) {
+        if(numberOfCoffees==100){
+            Toast.makeText(this, "You cannot have more than 100 coffees", Toast.LENGTH_SHORT).show();
+            return;
+        }
         numberOfCoffees = numberOfCoffees + 1;
         display(numberOfCoffees);
     }
@@ -48,8 +65,12 @@ public class MainActivity extends Activity {
      * This method is called when the minus button is clicked.
      */
     public void decrement(View view){
-            numberOfCoffees = numberOfCoffees - 1;
-            display(numberOfCoffees);
+        if(numberOfCoffees==1) {
+            Toast.makeText(this, "You cannot have less than 1 coffee", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        numberOfCoffees = numberOfCoffees - 1;
+        display(numberOfCoffees);
     }
 
     /**
@@ -66,14 +87,24 @@ public class MainActivity extends Activity {
      *
      * @param quantity is the number of cups of coffee ordered
      */
-    private int calculatePrice(int quantity) {
+    private int calculatePrice(int quantity, boolean hasWhippedCream, boolean hasChocolate) {
         int price = quantity * 5;
+
+        if(hasWhippedCream){
+            price = price+1;
+        }
+
+        if(hasChocolate){
+            price = price+2;
+        }
         return price;
     }
 
-    private String createOrderSummary(int price){
-        String message = "Name: Shine Yi\n";
-        message += "Quantity: " + numberOfCoffees;
+    private String createOrderSummary(int price, String nameValue, boolean hasWhippedCream, boolean hasChocolate){
+        String message = "Name: " + nameValue;
+        message += "\nAdd whipped cream? " + hasWhippedCream;
+        message += "\nAdd chocolate? " + hasChocolate;
+        message += "\nQuantity: " + numberOfCoffees;
         message += "\nTotal: $" + price;
         message += "\nThank you!";
         return message;
